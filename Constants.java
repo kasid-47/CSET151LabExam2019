@@ -19,6 +19,6 @@ public  final class Constants {
     // Command line argument to add an entry to the list. 
     public static final String AddEntry = "+";
 
-	//Putting the comma sign that is used for splitting the names in a constant
+	//The delimiter that separates entries in the student list.
     public static final String StudentEntryDelimiter = ",";
 }

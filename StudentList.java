@@ -14,50 +14,56 @@ public class StudentList {
 		
 		if(args[0].equals(ShowAll))
 		{
-			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
-			for(String word : words)
+			if(LoadStudentList(StudentList) != null)
 			{
-					System.out.println(word);
+				String students[] = LoadStudentList(StudentList).split(StudentEntryDelimiter);
+			
+				for(String student : students)
+				{
+					System.out.println(student);
+				}
 			}
+			else
+				System.out.println("Student List is Empty!");
 		}
 		else if(args[0].equals(ShowRandom)) 
 		{
-			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
+			String students[] = LoadStudentList(StudentList).split(StudentEntryDelimiter);
 			Random rand = new Random();
-			int randomIndex = rand.nextInt(words.length);
-			System.out.println(words[randomIndex]);		
+			int randomIndex = rand.nextInt(students.length);
+			System.out.println(students[randomIndex]);		
 		}
 		else if(args[0].contains(AddEntry))
 		{
-			UpdateContent(args[0].substring(1),StudentList);
+			UpdateStudentList(args[0].substring(1),StudentList);
 		}
 		else if(args[0].contains(FindEntry)) 
 		{
-			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
+			String students[] = LoadStudentList(StudentList).split(StudentEntryDelimiter);
 			String searchTerm = args[0].substring(1);
 			int index;
-			for(index = 0; index<words.length; index++)
+			for(index = 0; index<students.length; index++)
 			{
-				if(words[index].trim().equals(searchTerm))
+				if(students[index].trim().equals(searchTerm))
 				{
 					System.out.println("We found it!");
 					break;
 				}
 			}
-			if(index==words.length)
+			if(index==students.length)
 				System.out.println(searchTerm+" does not exist");
 		}
 		else if(args[0].contains(ShowCount)) 
 		{
-			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
-			System.out.println(words.length +" word(s) were found ");			
+			String students[] = LoadStudentList(StudentList).split(StudentEntryDelimiter);
+			System.out.println(students.length +" student(s) were found ");			
 		}
 		else
 		{
 			showValidArguments();
 		}
 	}
-	public static String LoadData(String fileName)
+	public static String LoadStudentList(String fileName)
 	{	
 		try
 		{
@@ -70,17 +76,17 @@ public class StudentList {
 		}	
 		
 	}
-	public static void UpdateContent(String studentName,String fileName)
+	public static void UpdateStudentList(String studentName,String fileName)
 	{
 		System.out.println("Loading data ...");
-		String listOfStudents = LoadData(StudentList);
+		String studentsList = LoadStudentList(StudentList);
 		try
 		{
 			FileWriter fileStream = new FileWriter(fileName);  
 			BufferedWriter buffer = new BufferedWriter(fileStream);
 			Date date = new Date();
 			DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy-hh:mm:ss a");
-			fileStream.write(listOfStudents+StudentEntryDelimiter+" "+studentName+"\nList last updated on "+dateFormat.format(date));
+			fileStream.write(studentsList+StudentEntryDelimiter+" "+studentName+"\nList last updated on "+dateFormat.format(date));
 			fileStream.close();
 		}
 		catch(Exception e)
@@ -93,6 +99,6 @@ public class StudentList {
 	// Message to be shown when invalid arguments are passed
 	public static void showValidArguments()
 	{
-		System.out.println("Use one of these arguments: -a | -r | -c | +WORD | ?WORD");	
+		System.out.println("Use one of these arguments: -a | -r | -c | +studentName | ?studentName");	
 	}
 }
