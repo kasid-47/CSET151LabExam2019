@@ -5,10 +5,10 @@ import static  CSET151LabExam2019.Constants.*;
 public class StudentList {
 	public static void main(String[] args) {
 
-		// Check arguments
+		// Check argument count
 		if (args == null || args.length != 1)
         {
-				System.out.println("Use one of these arguments: -a | -r | -c | +WORD | ?WORD");		
+				showValidArguments();
                 return; // Exit
         }
 		
@@ -52,6 +52,10 @@ public class StudentList {
 			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
 			System.out.println(words.length +" word(s) were found ");			
 		}
+		else
+		{
+			showValidArguments();
+		}
 	}
 	public static String LoadData(String fileName)
 	{	
@@ -84,5 +88,11 @@ public class StudentList {
 			
 		}
 		System.out.println("Data Loaded.");
+	}
+	
+	// Message to be shown when invalid arguments are passed
+	public static void showValidArguments()
+	{
+		System.out.println("Use one of these arguments: -a | -r | -c | +WORD | ?WORD");	
 	}
 }
