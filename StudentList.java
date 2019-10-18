@@ -1,41 +1,42 @@
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import static  CSET151LabExam2019.Constants.*;
 public class StudentList {
 	public static void main(String[] args) {
 
 		// Check arguments
 		if (args == null || args.length != 1)
         {
-				System.out.println("Use one of these arguments: a | r | c | +WORD | ?WORD");		
+				System.out.println("Use one of these arguments: -a | -r | -c | +WORD | ?WORD");		
                 return; // Exit
         }
 		
 		// Refactoring file reading code used in all blocks to a single method
-		String reader = LoadData("students.txt");
+		String reader = LoadData(StudentList);
 		
-		if(args[0].equals("a"))
+		if(args[0].equals(ShowAll))
 		{
-			String words[] = reader.split(",");
+			String words[] = reader.split(StudentEntryDelimiter);
 			for(String word : words)
 			{
 					System.out.println(word);
 			}
 		}
-		else if(args[0].equals("r")) 
+		else if(args[0].equals(ShowRandom)) 
 		{
-			String words[] = reader.split(",");
+			String words[] = reader.split(StudentEntryDelimiter);
 			Random rand = new Random();
 			int randomIndex = rand.nextInt(words.length);
 			System.out.println(words[randomIndex]);		
 		}
-		else if(args[0].contains("+"))
+		else if(args[0].contains(AddEntry))
 		{
-			UpdateContent(args,"students.txt",reader);
+			UpdateContent(args,StudentList,reader);
 		}
-		else if(args[0].contains("?")) 
+		else if(args[0].contains(FindEntry)) 
 		{
-			String words[] = reader.split(",");
+			String words[] = reader.split(StudentEntryDelimiter);
 			boolean done = false;
 			String t = args[0].substring(1);
 			for(int index = 0; index<words.length && !done; index++)
@@ -47,7 +48,7 @@ public class StudentList {
 				}
 			}			
 		}
-		else if(args[0].contains("c")) 
+		else if(args[0].contains(ShowCount)) 
 		{
 			char a[] = reader.toCharArray();			
 			boolean in_word = false;
@@ -58,7 +59,8 @@ public class StudentList {
 				{
 					if(!in_word)
 					{
-						count++; in_word =true;
+						count++;
+						in_word =true;
 					}
 					else
 					{
@@ -96,7 +98,7 @@ public class StudentList {
 			String df = "dd/mm/yyyy-hh:mm:ss a";
 			DateFormat dateFormat = new SimpleDateFormat(df);
 			String fd= dateFormat.format(date);
-			s.write(reader+", "+studentName+"\nList last updated on "+fd);
+			s.write(reader+StudentEntryDelimiter+" "+studentName+"\nList last updated on "+fd);
 			s.close();
 		}
 		catch (Exception e)
