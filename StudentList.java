@@ -34,16 +34,18 @@ public class StudentList {
 		else if(args[0].contains(FindEntry)) 
 		{
 			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
-			boolean done = false;
-			String t = args[0].substring(1);
-			for(int index = 0; index<words.length && !done; index++)
+			String searchTerm = args[0].substring(1);
+			int index;
+			for(index = 0; index<words.length; index++)
 			{
-				if(words[index].equals(t))
+				if(words[index].trim().equals(searchTerm))
 				{
 					System.out.println("We found it!");
-					done=true;
+					break;
 				}
-			}			
+			}
+			if(index==words.length)
+				System.out.println(searchTerm+" does not exist");
 		}
 		else if(args[0].contains(ShowCount)) 
 		{
