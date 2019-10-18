@@ -12,12 +12,9 @@ public class StudentList {
                 return; // Exit
         }
 		
-		// Refactoring file reading code used in all blocks to a single method
-		String reader = LoadData(StudentList);
-		
 		if(args[0].equals(ShowAll))
 		{
-			String words[] = reader.split(StudentEntryDelimiter);
+			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
 			for(String word : words)
 			{
 					System.out.println(word);
@@ -25,18 +22,18 @@ public class StudentList {
 		}
 		else if(args[0].equals(ShowRandom)) 
 		{
-			String words[] = reader.split(StudentEntryDelimiter);
+			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
 			Random rand = new Random();
 			int randomIndex = rand.nextInt(words.length);
 			System.out.println(words[randomIndex]);		
 		}
 		else if(args[0].contains(AddEntry))
 		{
-			UpdateContent(args,StudentList,reader);
+			UpdateContent(args[0].substring(1),StudentList);
 		}
 		else if(args[0].contains(FindEntry)) 
 		{
-			String words[] = reader.split(StudentEntryDelimiter);
+			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
 			boolean done = false;
 			String t = args[0].substring(1);
 			for(int index = 0; index<words.length && !done; index++)
@@ -50,7 +47,7 @@ public class StudentList {
 		}
 		else if(args[0].contains(ShowCount)) 
 		{
-			char a[] = reader.toCharArray();			
+			char a[] = LoadData(StudentList).toCharArray();			
 			boolean in_word = false;
 			int count=0;
 			for(char c:a)
@@ -72,36 +69,32 @@ public class StudentList {
 		}
 	}
 	public static String LoadData(String fileName)
-	{
-		//System.out.println("Loading data ...");
-		String reader = null;		
+	{	
 		try
 		{
-			BufferedReader fileStream = new BufferedReader(new InputStreamReader(new FileInputStream(fileName))); 
-			reader = fileStream.readLine();
+			BufferedReader fileStream = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+			return fileStream.readLine();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
-				
-		}
-		//System.out.println("Data Loaded.");		
-		return reader;
+			return "Buffer Exception!";
+		}	
+		
 	}
-	public  static  void  UpdateContent(String[] args, String fileName, String reader)
+	public static void UpdateContent(String studentName,String fileName)
 	{
 		System.out.println("Loading data ...");
-		try {
-			FileWriter s = new FileWriter(fileName);  
-			BufferedWriter buffer = new BufferedWriter(s);  
-			String studentName = args[0].substring(1);
+		String listOfStudents = LoadData(StudentList);
+		try
+		{
+			FileWriter fileStream = new FileWriter(fileName);  
+			BufferedWriter buffer = new BufferedWriter(fileStream);
 			Date date = new Date();
-			String df = "dd/mm/yyyy-hh:mm:ss a";
-			DateFormat dateFormat = new SimpleDateFormat(df);
-			String fd= dateFormat.format(date);
-			s.write(reader+StudentEntryDelimiter+" "+studentName+"\nList last updated on "+fd);
-			s.close();
+			DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy-hh:mm:ss a");
+			fileStream.write(listOfStudents+StudentEntryDelimiter+" "+studentName+"\nList last updated on "+dateFormat.format(date));
+			fileStream.close();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			
 		}
