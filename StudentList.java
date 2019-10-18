@@ -49,25 +49,8 @@ public class StudentList {
 		}
 		else if(args[0].contains(ShowCount)) 
 		{
-			char a[] = LoadData(StudentList).toCharArray();			
-			boolean in_word = false;
-			int count=0;
-			for(char c:a)
-			{
-				if(c ==' ') 
-				{
-					if(!in_word)
-					{
-						count++;
-						in_word =true;
-					}
-					else
-					{
-						in_word=false;
-					}			
-				}
-			}
-			System.out.println(count +" word(s) found " + a.length);			
+			String words[] = LoadData(StudentList).split(StudentEntryDelimiter);
+			System.out.println(words.length +" word(s) were found ");			
 		}
 	}
 	public static String LoadData(String fileName)
